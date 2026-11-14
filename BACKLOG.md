@@ -19,6 +19,7 @@
 
 | Item | Intent (why) | Acceptance criteria | Size | Risk | Type | Owner | Links | Success metric / hypothesis |
 |------|--------------|---------------------|------|------|------|-------|-------|-----------------------------|
+| `INCEPT-2` — make SECURITY.md promise only what the owner can meet | The policy promises 2-day acknowledgement and 5-day triage by default, and cites a RUNBOOK severity model that does not exist (INCEPT-1 security review, finding 5) | SECURITY.md response times are ones the owner confirms they can meet; the severity reference points at a section that exists in RUNBOOK.md, or is removed | S | control-plane | tech-debt | agent (conductor) | from `docs/reviews/2026-11-14-incept-1.md` | Every promise in SECURITY.md resolves to a real section or a confirmed owner commitment |
 
 > ⚠️ The placeholder row above is DELIBERATELY id-less: `| [title] |` is the exact string the gates
 > read as "this board is still the pristine template", which is what keeps a fresh adopter's first CI
@@ -31,7 +32,7 @@
 | Item | Owner | Started | Links |
 |------|-------|---------|-------|
 | | | | |
-| `INCEPT-1` — declare solo and make the disclosure channel live | cold-778-a | 2026-11-14 | branch `chore/declare-solo-and-disclosure` · N/A — claimed; design link follows |
+| `INCEPT-1` — declare solo and make the disclosure channel live | cold-778-a | 2026-11-14 | branch `chore/declare-solo-and-disclosure` · design: `docs/architecture/2026-11-14-solo-and-disclosure-design.md` · plan: `docs/plans/2026-11-14-incept-1.md` |
 
 ## In Review
 > Builder ≠ sole reviewer. Awaiting merge gate.

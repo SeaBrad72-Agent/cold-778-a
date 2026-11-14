@@ -20,8 +20,12 @@ Two items from the Inception "Owed" list are still open.
   `docs/adoption/vc-hosts.md` §Solo or team prescribes.
 - In `SECURITY.md`, replace `` `[owner/repo]` `` with `` `SeaBrad72-Agent/cold-778-a` ``. Nothing else in
   the file changes; the response-time defaults stay as shipped.
-- No `docs/governance/DECISIONS.md` entry: the file holds no rulings, and the solo choice is recorded
-  by the dial itself plus the owner's GO note on this PR's head sha.
+- Record the solo choice as ruling `D-261114-1` in `docs/governance/DECISIONS.md`, so a later agent
+  searching for the merge relationship finds it (review round 1 finding).
+- Branch protection stays exactly as applied: the required `control-plane-ratification` context and the
+  one required approval still block an agent-run `land` or `actuate`, because no non-author approval
+  can exist on one account. The owner admin-merges such PRs. Protection must not be relaxed to make
+  `land` succeed; it is the only server-side stop (security round 1 finding).
 
 ## Approaches considered
 1. **One PR for both (chosen).** Both are control-plane and each control-plane PR costs a full CI run
@@ -36,7 +40,7 @@ Two items from the Inception "Owed" list are still open.
 | # | Lens | Finding |
 |---|---|---|
 | 1 | Project principles | Holds. Security is foundational: the advertised disclosure channel becomes real. No principle bends. |
-| 2 | Friction | Removes friction for the owner: solo merges by the owner's recorded GO, with no second approver to find. Costs the owner one GO record and one hand merge. |
+| 2 | Friction | Removes friction for the owner: the kit's verbs accept the owner's recorded GO with no second approver to find. Branch protection still requires the owner's admin merge on this repo (see Decision). Costs the owner one GO record and one hand merge per protected PR. |
 | 3 | Software practice | It is the kit's documented route for both items, not a custom one. |
 | 4 | Agentic practice | The agent writes two small files. It can verify the dial with `sparkwright doctor` after merge and the channel with `conformance/security-channel-live.sh`. It must trust the owner's GO, which it records but cannot authenticate. |
 | 5 | CI | One full control-plane CI run (about 24 minutes per START-HERE, measured by the kit, not here). No new gate, no new flake surface. |

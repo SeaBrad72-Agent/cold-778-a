@@ -170,9 +170,9 @@ Written by sparkwright new: what it chose for you, and what a person still owes.
 - Roles: assign them in CLAUDE.md.
 - Autonomy tiers: declare them in CLAUDE.md.
 - SLO: declare the SLO and error-budget posture in CLAUDE.md.
-- SECURITY.md: add the real disclosure channel once the repository exists (there is no origin yet).
-- Branch protection: once the repository and its first CI run exist, run sh scripts/branch-protection-apply.sh --replace on an unprotected main.
+- ~~SECURITY.md: add the real disclosure channel once the repository exists (there is no origin yet).~~ Closed by `INCEPT-1`: channel repo named, private vulnerability reporting enabled 2026-11-14. Response-time promises carried as `INCEPT-2`.
+- ~~Branch protection: once the repository and its first CI run exist, run sh scripts/branch-protection-apply.sh --replace on an unprotected main.~~ Done 2026-11-14 by the owner (`--replace`, solo profile).
 - Agent forge account: give the agent its own limited forge account (docs/operations/forge-identity-switch.md).
 - First push: a person creates the project's repository on your forge and adds it as origin; then push main. Until then, while any agent-boundary part is off, preflight reports the declaration UNTRUSTED (no origin remote).
 - Agent boundary: if sh scripts/preflight.sh prints any FAIL boundary or FAIL egress line, follow its Fix or Remedy line (a person acts, for example merging the user-level block into ~/.claude/settings.json, or declares an opt-out in .kit/boundary-optout.conf), then re-run it to confirm.
-- Declare solo: the repository reads team until this merges. (1) Open a PR that creates .kit/dials.conf with the line MERGE_RELATIONSHIP=solo. (2) Run sh scripts/promotion-verify.sh record on that PR's head sha: class control-plane, your own words in --token, your name in --go-by. (3) Merge that PR yourself, by hand. See docs/adoption/vc-hosts.md, Solo or team.
+- Declare solo (closed by `INCEPT-1` once its PR merges; ruling `D-261114-1`): the repository reads team until this merges. (1) Open a PR that creates .kit/dials.conf with the line MERGE_RELATIONSHIP=solo. (2) Run sh scripts/promotion-verify.sh record on that PR's head sha: class control-plane, your own words in --token, your name in --go-by. (3) Merge that PR yourself, by hand. See docs/adoption/vc-hosts.md, Solo or team.
