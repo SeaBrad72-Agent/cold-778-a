@@ -4,7 +4,7 @@
 
 **Security contact:** GitHub private vulnerability reporting — this repo → **Security** → **Report a vulnerability**.
 
-**Channel repo:** `[owner/repo]` — verified live by `conformance/security-channel-live.sh`.
+**Channel repo:** `SeaBrad72-Agent/cold-778-a` — verified live by `conformance/security-channel-live.sh`.
 
 **Fallback (if private reporting isn't enabled yet):** open a public issue titled `security: request private contact` with **no vulnerability details**, and a maintainer will reply with a private channel.
 
