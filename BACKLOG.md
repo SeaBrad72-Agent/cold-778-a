@@ -19,7 +19,7 @@
 
 | Item | Intent (why) | Acceptance criteria | Size | Risk | Type | Owner | Links | Success metric / hypothesis |
 |------|--------------|---------------------|------|------|------|-------|-------|-----------------------------|
-| [title] | [why] | [testable criteria] | S | low | feature | [who] | [spec] | [how we'll know it worked] |
+| `INCEPT-1` — declare solo and make the disclosure channel live | Close two Inception owed items: the repo reads team until solo is declared, and SECURITY.md names a placeholder channel repo | `.kit/dials.conf` carries `MERGE_RELATIONSHIP=solo`; SECURITY.md `Channel repo:` names `SeaBrad72-Agent/cold-778-a`; private vulnerability reporting is enabled; owner GO recorded on the head sha; merged by hand | S | control-plane | tech-debt | agent (conductor) | design: `docs/architecture/2026-11-14-solo-and-disclosure-design.md` | `sparkwright doctor` reads solo, and `conformance/security-channel-live.sh` prints PASS |
 
 > ⚠️ The placeholder row above is DELIBERATELY id-less: `| [title] |` is the exact string the gates
 > read as "this board is still the pristine template", which is what keeps a fresh adopter's first CI
