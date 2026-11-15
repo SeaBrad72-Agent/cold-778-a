@@ -1,0 +1,13 @@
+record: promotion GO (approve->execute->log)
+approved-sha: 32a1af7616424d65e0cabfaf8b99ebb56dbe4437
+approved-tree: b355ec853d21b748e89ce9df2df2c001d524e283
+approved-by: SeaBrad72-Agent [self-asserted]
+go-by: Bradley James [self-asserted]
+gate: merge
+rung: integration
+change-class: ordinary
+kit-row: INCEPT-1
+scope: PR-2
+approval-token: "Go, merge PR 2"
+basis: (none recorded)
+recorded-at: 2026-11-15T05:08:41Z
