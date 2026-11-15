@@ -55,6 +55,7 @@
 | Item | Closed | Retro/outcome |
 |------|--------|---------------|
 | `INCEPT-1` — declare solo and make the disclosure channel live | 2026-11-15 | PR #1 merged as `ce00f8e` by the owner (admin squash) on their recorded merge GO for `830b3f4`. Outcome validated from the owner's terminal: `doctor --quick` reads `merge relationship: solo` and `branch protection: enforced on main`; `security-channel-live.sh` reads OK, private vulnerability reporting enabled. **L1 retro:** a two-line config change cost a design, three review rounds, a security seat and a 68-minute control-plane CI run; the ceremony, not the build, was the work. A copy-paste GO command with angle-bracket placeholders recorded the placeholders, and the GO had to be re-recorded after the merge: hand the owner a finished command, never one to fill in. Disposition: row `INCEPT-2`, ruling `D-261114-1` |
+| `APP-1` — create a short link and resolve it | 2026-11-15 | PR #3: `POST /api/v1/links` returns a 7-char code (201), `GET /<code>` redirects (302), unknown code 404, bad input refused 400/413/415; in memory per ADR-000. Outcome: the success metric (a created link resolves back to its URL, proven by tests, CI green) is the HTTP test on this PR, which runs only in CI because the agent's sandbox cannot bind a port. Reviewer APPROVE, security PASS-WITH-NOTES. **L1 retro:** the build took minutes; boarding, claiming and closing the row inside the same PR was what kept it to one owner merge. The sandbox that cannot run the kit's own HTTP tests left CI as the only proof of the core path. Disposition: none — no rule changes; the open-relay and cap-exhaustion risk is carried in the unrefined backlog for whoever picks a deploy target |
 
 ## Blocked
 | Item | Blocked on | Since | Event-retro link |
@@ -66,5 +67,6 @@
 > Validated candidates from Discover, not yet Ready. The roadmap/parking-lot lives separately (strategic altitude).
 
 - [ ] [candidate] — [intent] — [risk tag]
+- [ ] Protect link creation before any public deploy (private bind, or an owner token plus a POST rate limit) — anyone who can reach `POST /api/v1/links` can use it as an open relay and fill the 10,000-link cap (APP-1 security review, findings 1-2) — sensitive
 
 **Last Updated:** 2026-11-14
