@@ -39,7 +39,6 @@
 | Item | Reviewer | PR |
 |------|----------|----|
 | | | |
-| `INCEPT-1` — declare solo and make the disclosure channel live | reviewer seat (APPROVE ×3) · security seat (PASS-WITH-NOTES) · record `docs/reviews/2026-11-14-incept-1.md` | branch `chore/declare-solo-and-disclosure` |
 
 ## Released
 > Deployed; awaiting outcome validation (did it move its metric?).
@@ -55,6 +54,7 @@
 
 | Item | Closed | Retro/outcome |
 |------|--------|---------------|
+| `INCEPT-1` — declare solo and make the disclosure channel live | 2026-11-15 | PR #1 merged as `ce00f8e` by the owner (admin squash) on their recorded merge GO for `830b3f4`. Outcome validated from the owner's terminal: `doctor --quick` reads `merge relationship: solo` and `branch protection: enforced on main`; `security-channel-live.sh` reads OK, private vulnerability reporting enabled. **L1 retro:** a two-line config change cost a design, three review rounds, a security seat and a 68-minute control-plane CI run; the ceremony, not the build, was the work. A copy-paste GO command with angle-bracket placeholders recorded the placeholders, and the GO had to be re-recorded after the merge: hand the owner a finished command, never one to fill in. Disposition: row `INCEPT-2`, ruling `D-261114-1` |
 
 ## Blocked
 | Item | Blocked on | Since | Event-retro link |
