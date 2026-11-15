@@ -19,6 +19,7 @@
 
 | Item | Intent (why) | Acceptance criteria | Size | Risk | Type | Owner | Links | Success metric / hypothesis |
 |------|--------------|---------------------|------|------|------|-------|-------|-----------------------------|
+| `APP-1` — create a short link and resolve it | The charter's core: the owner shortens their own URLs and follows the short link back | `POST /api/v1/links` with an http(s) URL returns 201 and a short code; `GET /<code>` redirects 302 to the URL; an unknown code is 404; a non-http(s), oversized or malformed input is refused 4xx; links held in memory (ADR-000 defers the data store); tests cover both paths and the refusals | S | ordinary | feature | agent (conductor) | branch `feat/short-links` | A link created through the API resolves back to its URL, proven by tests, with CI green |
 | `INCEPT-2` — make SECURITY.md promise only what the owner can meet | The policy promises 2-day acknowledgement and 5-day triage by default, and cites a RUNBOOK severity model that does not exist (INCEPT-1 security review, finding 5) | SECURITY.md response times are ones the owner confirms they can meet; the severity reference points at a section that exists in RUNBOOK.md, or is removed | S | control-plane | tech-debt | agent (conductor) | from `docs/reviews/2026-11-14-incept-1.md` | Every promise in SECURITY.md resolves to a real section or a confirmed owner commitment |
 
 > ⚠️ The placeholder row above is DELIBERATELY id-less: `| [title] |` is the exact string the gates
