@@ -1,12 +1,13 @@
 // Minimal stdlib HTTP server exposing GET /healthz -> 200 JSON via health().
 // Kept separate from health.ts (and excluded from coverage in vitest.config.ts) so the
 // pure logic is what the coverage gate measures — the socket-binding main guard is not.
-import { createServer } from 'node:http';
+import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { appendFileSync } from 'node:fs';
 import { health } from './health.js';
 import { isEnabled, setProvider } from './flags.js';
 import { fileConfigProvider } from './live-provider.js';
+import { createLinkStore, isShortCode, validateTargetUrl } from './links.js';
 
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
@@ -72,6 +73,67 @@ function renderMetrics(): string {
   return lines.join('\n') + '\n';
 }
 
+// APP-1 short links. One in-memory store per process (ADR-000 defers the data store).
+const links = createLinkStore();
+const MAX_BODY_BYTES = 4096;
+
+function sendJson(res: ServerResponse, status: number, body: unknown, extra: Record<string, string> = {}): void {
+  res.writeHead(status, { 'Content-Type': 'application/json', ...SECURITY_HEADERS, ...extra });
+  res.end(JSON.stringify(body));
+}
+
+// Reads at most MAX_BODY_BYTES. A larger body is drained (not buffered) and answered as null, so an
+// oversized request costs no memory and still gets a clean 413 instead of a dropped socket.
+function readBody(req: IncomingMessage): Promise<string | null> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    let size = 0;
+    let tooLarge = false;
+    req.on('data', (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > MAX_BODY_BYTES) tooLarge = true;
+      if (!tooLarge) chunks.push(chunk);
+    });
+    req.on('end', () => resolve(tooLarge ? null : Buffer.concat(chunks).toString('utf8')));
+    req.on('error', reject);
+  });
+}
+
+async function handleCreateLink(req: IncomingMessage, res: ServerResponse): Promise<void> {
+  const contentType = req.headers['content-type'] ?? '';
+  if (!contentType.toLowerCase().startsWith('application/json')) {
+    req.resume();
+    sendJson(res, 415, { error: 'content type must be application/json' });
+    return;
+  }
+  const raw = await readBody(req);
+  if (raw === null) {
+    sendJson(res, 413, { error: 'body too large' });
+    return;
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    parsed = undefined;
+  }
+  const candidate = parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+    ? (parsed as Record<string, unknown>).url
+    : undefined;
+  const url = validateTargetUrl(candidate);
+  if (url === null) {
+    sendJson(res, 400, { error: 'invalid url' });
+    return;
+  }
+  const created = links.create(url);
+  if (!created.ok) {
+    sendJson(res, 503, { error: 'cannot create a link right now' });
+    return;
+  }
+  const path = `/${created.code}`;
+  sendJson(res, 201, { code: created.code, url, path }, { Location: path });
+}
+
 export const server = createServer((req, res) => {
   const startMono = process.hrtime.bigint();
   const startNano = BigInt(Date.now()) * 1_000_000n; // wall-clock unix nanos at request start
@@ -123,6 +185,22 @@ export const server = createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json', ...SECURITY_HEADERS });
     res.end(JSON.stringify({ greeting }));
     return;
+  }
+  const path = (req.url ?? '').split('?')[0];
+  if (req.method === 'POST' && path === '/api/v1/links') {
+    handleCreateLink(req, res).catch(() => {
+      if (!res.headersSent) sendJson(res, 500, { error: 'internal error' });
+      else res.end();
+    });
+    return;
+  }
+  if (req.method === 'GET' && isShortCode(path.slice(1))) {
+    const target = links.resolve(path.slice(1));
+    if (target !== undefined) {
+      res.writeHead(302, { Location: target, 'Cache-Control': 'no-store', ...SECURITY_HEADERS });
+      res.end();
+      return;
+    }
   }
   res.writeHead(404, { 'Content-Type': 'application/json', ...SECURITY_HEADERS });
   res.end(JSON.stringify({ error: 'not found' }));
