@@ -101,7 +101,7 @@ function readBody(req: IncomingMessage): Promise<string | null> {
 
 async function handleCreateLink(req: IncomingMessage, res: ServerResponse): Promise<void> {
   const contentType = req.headers['content-type'] ?? '';
-  if (!contentType.toLowerCase().startsWith('application/json')) {
+  if (contentType.split(';')[0].trim().toLowerCase() !== 'application/json') {
     req.resume();
     sendJson(res, 415, { error: 'content type must be application/json' });
     return;

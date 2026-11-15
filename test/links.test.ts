@@ -65,6 +65,13 @@ describe('createLinkStore', () => {
     expect(store.resolve('AAAAAAA')).toBe('https://one.example/');
   });
 
+  it('never hands out a code the server already routes', () => {
+    const codes = ['healthz', 'metrics', 'CCCCCCC'];
+    const store = createLinkStore({ generateCode: () => codes.shift() ?? 'DDDDDDD' });
+    expect(store.create('https://example.com/')).toEqual({ ok: true, code: 'CCCCCCC' });
+    expect(store.resolve('healthz')).toBeUndefined();
+  });
+
   it('refuses new links once full, so memory stays bounded', () => {
     const store = createLinkStore({ maxLinks: 1 });
     expect(store.create('https://one.example/').ok).toBe(true);
@@ -87,7 +94,10 @@ describe('HTTP: create and resolve a short link', () => {
   async function withServer(run: (base: string) => Promise<void>): Promise<void> {
     await new Promise<void>((resolve, reject) => {
       server.once('error', reject);
-      server.listen(0, resolve);
+      server.listen(0, () => {
+        server.off('error', reject);
+        resolve();
+      });
     });
     const { port } = server.address() as AddressInfo;
     try {
@@ -137,10 +147,20 @@ describe('HTTP: create and resolve a short link', () => {
     });
   });
 
-  it('refuses a non-JSON content type with 415', async () => {
+  it.each([
+    ['a form body', 'application/x-www-form-urlencoded'],
+    ['a look-alike media type', 'application/jsonx'],
+  ])('refuses %s with 415', async (_label, contentType) => {
     await withServer(async (base) => {
-      const res = await postLink(base, 'url=https://example.com/', 'application/x-www-form-urlencoded');
+      const res = await postLink(base, JSON.stringify({ url: 'https://example.com/' }), contentType);
       expect(res.status).toBe(415);
+    });
+  });
+
+  it('accepts JSON with a charset parameter', async () => {
+    await withServer(async (base) => {
+      const res = await postLink(base, JSON.stringify({ url: 'https://example.com/' }), 'application/json; charset=utf-8');
+      expect(res.status).toBe(201);
     });
   });
 

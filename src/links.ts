@@ -8,6 +8,8 @@ const CODE_PATTERN = /^[A-Za-z0-9]{7}$/;
 const MAX_URL_LENGTH = 2048;
 const MAX_CREATE_ATTEMPTS = 5;
 const DEFAULT_MAX_LINKS = 10_000;
+// Seven-character paths the server already routes; a link with one of these codes could never resolve.
+const RESERVED_CODES = new Set(['healthz', 'metrics']);
 
 export type CreateResult = { ok: true; code: string } | { ok: false; error: 'no-free-code' | 'full' };
 
@@ -60,7 +62,7 @@ export function createLinkStore(options: LinkStoreOptions = {}): LinkStore {
       // Retry on collision rather than overwrite: an existing short link must never change target.
       for (let attempt = 0; attempt < MAX_CREATE_ATTEMPTS; attempt += 1) {
         const code = generateCode();
-        if (!links.has(code)) {
+        if (!links.has(code) && !RESERVED_CODES.has(code)) {
           links.set(code, url);
           return { ok: true, code };
         }
