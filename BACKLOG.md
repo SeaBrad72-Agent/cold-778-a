@@ -19,7 +19,7 @@
 
 | Item | Intent (why) | Acceptance criteria | Size | Risk | Type | Owner | Links | Success metric / hypothesis |
 |------|--------------|---------------------|------|------|------|-------|-------|-----------------------------|
-| [title] | [why] | [testable criteria] | S | low | feature | [who] | [spec] | [how we'll know it worked] |
+| `INCEPT-2` — make SECURITY.md promise only what the owner can meet | The policy promises 2-day acknowledgement and 5-day triage by default, and cites a RUNBOOK severity model that does not exist (INCEPT-1 security review, finding 5) | SECURITY.md response times are ones the owner confirms they can meet; the severity reference points at a section that exists in RUNBOOK.md, or is removed | S | control-plane | tech-debt | agent (conductor) | from `docs/reviews/2026-11-14-incept-1.md` | Every promise in SECURITY.md resolves to a real section or a confirmed owner commitment |
 
 > ⚠️ The placeholder row above is DELIBERATELY id-less: `| [title] |` is the exact string the gates
 > read as "this board is still the pristine template", which is what keeps a fresh adopter's first CI
@@ -39,6 +39,7 @@
 | Item | Reviewer | PR |
 |------|----------|----|
 | | | |
+| `INCEPT-1` — declare solo and make the disclosure channel live | reviewer seat (APPROVE ×3) · security seat (PASS-WITH-NOTES) · record `docs/reviews/2026-11-14-incept-1.md` | branch `chore/declare-solo-and-disclosure` |
 
 ## Released
 > Deployed; awaiting outcome validation (did it move its metric?).

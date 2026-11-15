@@ -4,7 +4,7 @@ Your project's ledger of rulings. The entry contract (§1 of your project guide)
 search this file before changing a surface — so a ruling that lives only in a chat transcript does
 not exist.
 
-**Status:** empty — no rulings recorded yet.
+**Status:** in use — 1 ruling (`D-261114-1`).
 
 ---
 
@@ -53,4 +53,10 @@ that is what tooling matches, so keep the shape exactly:
 
 ## 4. Rulings
 
-*(None yet. Add the newest at the top, so the current state is the first thing read.)*
+*(Add the newest at the top, so the current state is the first thing read.)*
+
+**`D-261114-1` · ruling · The merge relationship is solo: `.kit/dials.conf` carries `MERGE_RELATIONSHIP=solo`, and `main` keeps its branch protection unchanged.**
+
+**BASIS:** The project runs under one forge account (`SeaBrad72-Agent`), so a non-author approval can never exist and team cannot work. Declared through the kit's route in `docs/adoption/vc-hosts.md` §Solo or team; design `docs/architecture/2026-11-14-solo-and-disclosure-design.md` (row `INCEPT-1`). Quote: "One forge account. `MERGE_RELATIONSHIP=solo` in `.kit/dials.conf`, merged once by hand." Accepted trade-off: a solo GO is self-asserted by name, with no server-side kill switch. Branch protection (required `control-plane-ratification`, one required approval, `enforce_admins:false`) stays as it is and must not be relaxed to let `land` or `actuate` succeed; the owner admin-merges what protection blocks. Protection is a drift control, not a boundary: it blocks the kit's verbs (which never pass `--admin`), but while the agent shares the owner's admin account a raw admin merge is not stopped server-side.
+**SUPERSEDES:** none.
+**REVISIT-CONDITION:** a second person with write access joins, or the agent gets its own limited forge account (`docs/operations/forge-identity-switch.md`); then move to team with `sh scripts/sparkwright team`.
