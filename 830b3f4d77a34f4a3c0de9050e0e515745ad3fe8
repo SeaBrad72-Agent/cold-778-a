@@ -1,0 +1,13 @@
+record: promotion GO (approve->execute->log)
+approved-sha: 830b3f4d77a34f4a3c0de9050e0e515745ad3fe8
+approved-tree: a02363cf3fa694dea90eb3e444ab9bb70d2d8bcb
+approved-by: SeaBrad72-Agent [self-asserted]
+go-by: <your name> [self-asserted]
+gate: merge
+rung: integration
+change-class: control-plane
+kit-row: INCEPT-1
+scope: PR-1
+approval-token: "<your approval, in your words>"
+basis: (none recorded)
+recorded-at: 2026-11-15T04:51:08Z
