@@ -1,0 +1,13 @@
+record: promotion GO (approve->execute->log)
+approved-sha: 093baef53585f5905f3558fddda74b3c2e10066f
+approved-tree: 990c9b110f49a98789ef9aa151d5ae768b1b1ea6
+approved-by: cold-778-a [committer]
+go-by: SeaBrad72-Agent [self-asserted]
+gate: design
+rung: integration
+change-class: control-plane
+kit-row: INCEPT-1
+scope: branch/chore/declare-solo-and-disclosure
+approval-token: "Go"
+basis: docs/architecture/2026-11-14-solo-and-disclosure-design.md
+recorded-at: 2026-11-15T00:03:41Z
