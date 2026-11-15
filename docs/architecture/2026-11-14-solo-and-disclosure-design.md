@@ -25,7 +25,10 @@ Two items from the Inception "Owed" list are still open.
 - Branch protection stays exactly as applied: the required `control-plane-ratification` context and the
   one required approval still block an agent-run `land` or `actuate`, because no non-author approval
   can exist on one account. The owner admin-merges such PRs. Protection must not be relaxed to make
-  `land` succeed; it is the only server-side stop (security round 1 finding).
+  `land` succeed (security round 1 finding). It blocks the kit's merge verbs, which never pass
+  `--admin`; it does not stop a raw admin merge from this account, because the agent shares the owner's
+  admin credentials until it has its own forge account. It is a drift control, not a boundary
+  (`docs/adoption/vc-hosts.md` §Solo or team; review round 2 finding).
 
 ## Approaches considered
 1. **One PR for both (chosen).** Both are control-plane and each control-plane PR costs a full CI run
@@ -45,7 +48,7 @@ Two items from the Inception "Owed" list are still open.
 | 4 | Agentic practice | The agent writes two small files. It can verify the dial with `sparkwright doctor` after merge and the channel with `conformance/security-channel-live.sh`. It must trust the owner's GO, which it records but cannot authenticate. |
 | 5 | CI | One full control-plane CI run (about 24 minutes per START-HERE, measured by the kit, not here). No new gate, no new flake surface. |
 | 6 | DevOps and operations | No deploy. Rollback is a revert PR that deletes the dial and restores the line. Signal: `doctor` prints `merge relationship: solo`. |
-| 7 | Security, privacy and guardrails | **Capability: yes, bounded.** With solo declared, the kit's merge verbs accept the owner's recorded GO alone, with no second approver and no server-side kill switch (`docs/adoption/vc-hosts.md`). This is the accepted solo trade-off for a one-account project. Data: none touched. No regulatory obligation. Definition of Ready flags: threat model no, privacy review no, evals no, compliance no. |
+| 7 | Security, privacy and guardrails | **Capability: yes, bounded.** With solo declared, the kit's merge verbs accept the owner's recorded GO alone, with no second approver and no server-side kill switch (`docs/adoption/vc-hosts.md`). The GO is not checked server-side, and branch protection is a drift control that this account's admin rights can bypass while the agent shares the owner's account. This is the accepted solo trade-off for a one-account project. Data: none touched. No regulatory obligation. Definition of Ready flags: threat model no, privacy review no, evals no, compliance no. |
 | 8 | Cost and efficiency | Build: minutes (estimate). Run: zero. CI: one run (about 24 minutes, kit's measurement). Ships in this project only. Size: 2 changed lines plus this file. |
 | 9 | Product | Need: the owner must be able to merge their own work, and reporters need a working private channel. Metric: `doctor` reads solo, and `security-channel-live.sh` prints PASS. |
 | 10 | Design | Smallest shape: one new line in one new file, and one replaced token. Nothing smaller closes both items. |
