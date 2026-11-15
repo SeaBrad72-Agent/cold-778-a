@@ -32,7 +32,6 @@
 | Item | Owner | Started | Links |
 |------|-------|---------|-------|
 | | | | |
-| `INCEPT-1` — declare solo and make the disclosure channel live | cold-778-a | 2026-11-14 | branch `chore/declare-solo-and-disclosure` · design: `docs/architecture/2026-11-14-solo-and-disclosure-design.md` · plan: `docs/plans/2026-11-14-incept-1.md` |
 
 ## In Review
 > Builder ≠ sole reviewer. Awaiting merge gate.
@@ -40,6 +39,7 @@
 | Item | Reviewer | PR |
 |------|----------|----|
 | | | |
+| `INCEPT-1` — declare solo and make the disclosure channel live | reviewer seat (APPROVE ×3) · security seat (PASS-WITH-NOTES) · record `docs/reviews/2026-11-14-incept-1.md` | branch `chore/declare-solo-and-disclosure` |
 
 ## Released
 > Deployed; awaiting outcome validation (did it move its metric?).
